@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Asim ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffafbd 0%, #ffc3a0 100%);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 350px;
+            z-index: 10;
+        }
+
+        .photo {
+            width: 100%;
+            height: 200px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .photo img { width: 100%; height: 100%; object-fit: cover; }
+
+        h1 { font-size: 26px; color: #d63384; margin-bottom: 25px; }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            min-height: 100px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        #yesBtn { background: #ff4d6d; color: white; }
+        #noBtn { background: #eee; color: #555; }
+
+        /* Success Message styling */
+        #final-msg { display: none; }
+        #final-msg h1 { color: #ff4d6d; }
+
+        .heart { position: fixed; pointer-events: none; z-index: 1000; }
+    </style>
+</head>
+<body>
+
+    <audio id="music" loop><source src="our-song.mp3" type="audio/mpeg"></audio>
+
+    <div class="card" id="card">
+        <div id="quiz">
+            <div class="photo">
+                <img src="us.jpg" alt="Us ❤️">
+            </div>
+            <h1>Asim, will you be my valentine? 💗</h1>
+            <div class="btn-container">
+                <button id="yesBtn" onclick="showLove()">Yes 💖</button>
+                <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">No 🙃</button>
+            </div>
+        </div>
+
+        <div id="final-msg">
+            <h1>I love you so much ❤️</h1>
+            <p style="font-size: 18px; color: #555; line-height: 1.6;">
+                <strong>Asim</strong>,<br><br>
+                You are my best friend, my safe place,<br>
+                and my forever Valentine 💕<br><br>
+                Thank you for choosing me — always.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        var yesScale = 1;
+        var noTexts = ["No 🙃", "Are you sure?", "Think again!", "You're mean!", "Try again!", "Asim please!"];
+        var noCount = 0;
+
+        function moveNo() {
+            var btn = document.getElementById('noBtn');
+            var yes = document.getElementById('yesBtn');
+
+            // --- STAY IN FRAME LOGIC ---
+            // We use a 100px "safe zone" from the edges
+            var padding = 100;
+            var maxX = window.innerWidth - btn.offsetWidth - padding;
+            var maxY = window.innerHeight - btn.offsetHeight - padding;
+            
+            var x = Math.random() * (maxX - padding) + padding;
+            var y = Math.random() * (maxY - padding) + padding;
+            
+            btn.style.position = "fixed";
+            btn.style.left = x + "px";
+            btn.style.top = y + "px";
+
+            // Make Yes grow
+            yesScale += 0.2;
+            yes.style.transform = "scale(" + yesScale + ")";
+
+            // Change Text
+            noCount++;
+            btn.innerHTML = noTexts[noCount % noTexts.length];
+        }
+
+        function showLove() {
+            document.getElementById('quiz').style.display = "none";
+            document.getElementById('final-msg').style.display = "block";
+            document.getElementById('card').style.width = "400px";
+
+            var audio = document.getElementById('music');
+            audio.play().catch(function(e) { console.log("Audio blocked"); });
+
+            // Romantic Heart Rain
+            setInterval(function() {
+                var h = document.createElement("div");
+                h.className = "heart";
+                h.innerHTML = ["❤️","💖","💕","✨"][Math.floor(Math.random()*4)];
+                h.style.left = Math.random() * 100 + "vw";
+                h.style.top = "100vh";
+                h.style.fontSize = (Math.random() * 20 + 20) + "px";
+                document.body.appendChild(h);
+                
+                var pos = 100;
+                var id = setInterval(function() {
+                    if (pos < -10) {
+                        clearInterval(id);
+                        h.remove();
+                    } else {
+                        pos -= 0.5;
+                        h.style.top = pos + "vh";
+                    }
+                }, 10);
+            }, 250);
+        }
+    </script>
+</body>
+</html>
